@@ -19,6 +19,19 @@ import java.util.Date;
 @Entity
 public class TaskDTO {
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TaskDTO taskDTO = (TaskDTO) o;
+        return Objects.equals(id, taskDTO.id) && Objects.equals(description, taskDTO.description) && Objects.equals(isValid, taskDTO.isValid) && Objects.equals(createdAt, taskDTO.createdAt);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, description, isValid, createdAt);
+    }
+
     @Id
     @GeneratedValue
     private Long id;

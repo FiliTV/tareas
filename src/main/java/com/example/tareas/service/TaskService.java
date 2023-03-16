@@ -22,12 +22,11 @@ public class TaskService {
     TaskRepository taskRepository;
 
     public void create(TaskDAO task) {
-        TaskDTO taskDTO = TaskDTO
+        taskRepository.save(TaskDTO
                 .builder()
                 .description(task.getDescription())
                 .isValid(true)
-                .build();
-        taskRepository.save(taskDTO);
+                .build());
     }
 
     public List<TaskView> list() {

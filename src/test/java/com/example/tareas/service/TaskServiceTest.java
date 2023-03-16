@@ -27,16 +27,14 @@ class TaskServiceTest {
                 .builder()
                 .description("test")
                 .build();
+
         taskService.create(task);
 
-        TaskDTO taskDTO = TaskDTO
+        then(taskRepository).should().save(TaskDTO
                 .builder()
-                .description("test")
+                .description(task.getDescription())
                 .isValid(true)
-//                .createdAt(Instant.now())
-                .build();
-
-        then(taskRepository).should().save(taskDTO);
+                .build());
 
     }
 
@@ -49,8 +47,7 @@ class TaskServiceTest {
                 TaskDTO.
                         builder()
                         .description("test")
-                        .build())
-                ;
+                        .build());
         given(taskRepository.findAll()).willReturn(expectedTasks);
 
         List<TaskView> actual = taskService.list();
@@ -58,7 +55,7 @@ class TaskServiceTest {
 
         List<TaskView> tasks = Collections.singletonList(TaskView
                 .builder()
-                        .description("test")
+                .description("test")
                 .build());
         assertThat(tasks)
                 .isEqualTo(actual);
@@ -69,18 +66,17 @@ class TaskServiceTest {
         TaskRepository taskRepository = mock(TaskRepository.class);
         TaskService taskService = new TaskService(taskRepository);
 
-        Optional<TaskDTO> result = Optional.of(TaskDTO.builder()
-                        .description("test2")
-                .build());
-        given(taskRepository.findById(Long.valueOf(1))).willReturn(result);
+        given(taskRepository.findById(Long.valueOf(1)))
+                .willReturn(Optional.of(TaskDTO.builder()
+                        .description("test")
+                        .build()));
 
-        TaskDAO task = TaskDAO.builder().description("test").build();
+        TaskDAO task = TaskDAO.builder().description("test2").valid(true).build();
         taskService.update("1", task);
 
 
-        then(taskRepository).should().save(TaskDTO.builder()
-                .description("test")
-                .build());
+        then(taskRepository).should().updateDescription(1,"test2");
+        then(taskRepository).should().updateValid(1,true);
 
     }
 
