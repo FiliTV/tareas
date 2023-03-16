@@ -20,7 +20,9 @@ class TaskControllerTest {
         TaskService taskService = mock(TaskService.class);
         TaskController controller = new TaskController(taskService);
 
-        TaskDAO task = new TaskDAO();
+        TaskDAO task = TaskDAO.builder()
+                .description("Task")
+                .build();
         controller.create(task);
 
         then(taskService).should().create(task);
@@ -59,7 +61,9 @@ class TaskControllerTest {
         TaskService taskService = mock(TaskService.class);
         TaskController controller = new TaskController(taskService);
 
-        TaskDAO task = new TaskDAO();
+        TaskDAO task = TaskDAO.builder()
+                .description("Task")
+                .build();
         controller.update("test",task);
 
         then(taskService).should().update("test",task);

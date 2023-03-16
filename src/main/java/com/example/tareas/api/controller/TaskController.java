@@ -5,11 +5,10 @@ import com.example.tareas.api.view.TaskView;
 import com.example.tareas.service.TaskService;
 import lombok.AllArgsConstructor;
 
-import lombok.extern.flogger.Flogger;
-import lombok.extern.log4j.Log4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 
 
 @AllArgsConstructor
@@ -24,6 +23,10 @@ public class TaskController {
     @CrossOrigin
     @PostMapping
     public void create(@RequestBody TaskDAO task){
+
+        FormatValidator.validate(task);
+
+
         taskService.create(task);
     }
 
@@ -41,6 +44,8 @@ public class TaskController {
     @CrossOrigin
     @PutMapping(value = "/{id}")
     public void update(@PathVariable String id, @RequestBody TaskDAO task) {
+        FormatValidator.validate(task);
+
         log.info(id);
         taskService.update(id,task);
     }
